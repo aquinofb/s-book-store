@@ -1,20 +1,22 @@
 package com.felipe.db
 
-import org.flywaydb.core.Flyway
+import org.flywaydb.core.{Flyway => CoreFlyway}
 
-class Migrations(jdbcUrl: String, dbUser: String, dbPassword: String) {
+object Flyway {
+  def apply(databaseName: Option[String]): CoreFlyway = {
+    val settings = CoreDatabase.settings(databaseName)
+    val dbMigrationLocation = "classpath:db.migration"
 
-  private val flyway = new Flyway()
-  flyway.setDataSource(jdbcUrl, dbUser, dbPassword)
+    val flyway = new CoreFlyway
 
-  def migrateDatabase = {
-    flyway.migrate()
-    this
+    flyway.setDataSource(settings.url, settings.user, settings.password)
+
+    flyway.setSchemas(settings.dbName)
+    flyway.setLocations(dbMigrationLocation)
+    flyway
   }
+}
 
-  def dropDatabase = {
-    flyway.clean()
-    this
-  }
-
+object Migrations extends App {
+  Flyway(None).migrate
 }

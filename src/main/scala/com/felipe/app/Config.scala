@@ -2,7 +2,7 @@ package com.felipe.app
 
 import com.typesafe.config.ConfigFactory
 
-object AppConfig {
+object Config {
   private val config = ConfigFactory.load()
 
   object server {
@@ -13,6 +13,12 @@ object AppConfig {
 
   object database {
     private val c = config.getConfig("database")
+
+    val driver: String = c.getString("driver")
+    val host: String = c.getString("host")
+    val name: String = c.getString("properties.name")
+    val user: String = c.getString("properties.user")
+    val password: String = c.getString("properties.password")
   }
 
 }
