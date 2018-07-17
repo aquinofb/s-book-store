@@ -1,6 +1,14 @@
-package com.felipe.db
+package com.felipe.app
 
+import com.felipe.db.CoreDatabase
 import org.flywaydb.core.{Flyway => CoreFlyway}
+
+object Migrations {
+  def run: Boolean = {
+    Flyway(None).migrate()
+    true
+  }
+}
 
 object Flyway {
   def apply(databaseName: Option[String]): CoreFlyway = {
@@ -11,12 +19,8 @@ object Flyway {
 
     flyway.setDataSource(settings.url, settings.user, settings.password)
 
-    flyway.setSchemas(settings.dbName)
+    flyway.setSchemas(databaseName.get)
     flyway.setLocations(dbMigrationLocation)
     flyway
   }
-}
-
-object Migrations extends App {
-  Flyway(None).migrate
 }

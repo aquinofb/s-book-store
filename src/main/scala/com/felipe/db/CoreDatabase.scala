@@ -29,7 +29,6 @@ object CoreDatabase {
       url = dbSettings.url,
       user = dbSettings.user,
       password = dbSettings.password,
-      driver = dbSettings.driver,
       executor = AsyncExecutor.default()
     )
   }

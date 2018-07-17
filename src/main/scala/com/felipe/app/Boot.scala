@@ -10,13 +10,13 @@ import com.felipe.web.Router
 import scala.concurrent.ExecutionContext
 
 object Boot extends HttpApp with App {
-
   implicit val system: ActorSystem = ActorSystem("bookstore")
   implicit val materializer: ActorMaterializer = ActorMaterializer.create(system)
   implicit val executionContext: ExecutionContext = system.dispatcher
 
-  implicit lazy val db: Database = CoreDatabase()
+//  Migrations.run
 
+  implicit lazy val db: Database = CoreDatabase()
   override protected def routes: Route = Router().routes
 
   startServer(Config.server.host, Config.server.port)
